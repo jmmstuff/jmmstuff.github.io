@@ -11,7 +11,7 @@
 			<div>Enter your name to check if you've been naughty or nice.</div>
 			<div><input type="text" id="name"><input type="button" value="Check List" onclick="checklist()"></div>
 		</div>
-		<div id="second">Let me see... it says here you've been very <span id="naughtyresult"></span> this year. Click to the present to see what Santa brought you! <br><img src="present.png" width="10%" height="10%" onclick="openpresent()"></div>
+		<div id="second">Let me see... it says <span id="who"></span> has been very <span id="naughtyresult"></span> this year. Click to the present to see what Santa brought you! <br><img src="present.png" width="10%" height="10%" onclick="openpresent()"></div>
 		<div id="third"><div id="presentresult"></div><input type="button" value="Try Again" onclick="reset()"></div>
 	</body>
 
@@ -22,6 +22,7 @@ let first = document.getElementById("first");
 let second = document.getElementById("second");
 let third = document.getElementById("third");
 let name = document.getElementById("name");
+let who = document.getElementById("who");
 let naughtyresult = document.getElementById("naughtyresult");
 let presentresult = document.getElementById("presentresult");
 let number = 0;
@@ -47,11 +48,12 @@ const checklist = () => {
 		return ;
 	}
 
+	who.innerText = name.value;
 	number = hash(name.value);
 	if (number % 2) {
-		naughtyresult.innerText = "Naughty";
-	} else {
 		naughtyresult.innerText = "Nice";
+	} else {
+		naughtyresult.innerText = "Naughty";
 	}
 	document.body.replaceChild(second, first);
 
@@ -60,9 +62,9 @@ const checklist = () => {
 
 const openpresent = () => {
 	if (number % 2) {
-		presentresult.innerText = "Santa left you " + badgifts[number % badgifts.length] + "... Better luck next year!";
-	} else {
 		presentresult.innerText = "Santa left you " + goodgifts[number % goodgifts.length] + "!!!";
+	} else {
+		presentresult.innerText = "Santa left you " + badgifts[number % badgifts.length] + "... Better luck next year!";
 	}
 	document.body.replaceChild(third, second);
 
