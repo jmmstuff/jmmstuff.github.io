@@ -1,0 +1,79 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>Christmas!</title>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body>
+		<div id="first">
+			<div>Enter your name to check if you've been naughty or nice.</div>
+			<div><input type="text" id="name"><input type="button" value="Check List" onclick="checklist()"></div>
+		</div>
+		<div id="second">Let me see... it says here you've been very <span id="naughtyresult"></span> this year. Click to the present to see what Santa brought you! <br><img src="present.png" width="10%" height="10%" onclick="openpresent()"></div>
+		<div id="third"><div id="presentresult"></div><input type="button" value="Try Again" onclick="reset()"></div>
+	</body>
+
+<script>
+const badgifts = ["the collected works of Neil Diamond", "one free massage from Pepper", "a pack of batteries (batteries not included)", "Christmas spirit", "a slinky", "a valuable lesson"]
+const goodgifts = ["the collected works of Neil Diamond", "a pet rock", "a platter of cheese", "an all expense paid trip to Paris, Kentucky", "socks", "a brand new chew toy", "a pony"]
+let first = document.getElementById("first");
+let second = document.getElementById("second");
+let third = document.getElementById("third");
+let name = document.getElementById("name");
+let naughtyresult = document.getElementById("naughtyresult");
+let presentresult = document.getElementById("presentresult");
+let number = 0;
+document.body.removeChild(second);
+document.body.removeChild(third);
+const hash = (str, seed = 0) => {
+	let h1 = 0xdeadbeef ^ seed,
+		h2 = 0x41c6ce57 ^ seed;
+	for (let i = 0, ch; i < str.length; i++) {
+		ch = str.charCodeAt(i);
+		h1 = Math.imul(h1 ^ ch, 2654435761);
+		h2 = Math.imul(h2 ^ ch, 1597334677);
+	}
+  
+	h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+	h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  
+	return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+};
+
+const checklist = () => {
+	if (name.value.length < 1) {
+		return ;
+	}
+
+	number = hash(name.value);
+	if (number % 2) {
+		naughtyresult.innerText = "Naughty";
+	} else {
+		naughtyresult.innerText = "Nice";
+	}
+	document.body.replaceChild(second, first);
+
+	return ;
+}
+
+const openpresent = () => {
+	if (number % 2) {
+		presentresult.innerText = "Santa left you " + badgifts[number % badgifts.length] + "... Better luck next year!";
+	} else {
+		presentresult.innerText = "Santa left you " + goodgifts[number % goodgifts.length] + "!!!";
+	}
+	document.body.replaceChild(third, second);
+
+	return ;
+}
+
+const reset = () => {
+	name.value = "";
+	document.body.replaceChild(first, third);
+
+	return ;
+}
+</script>
+</html>
