@@ -16,8 +16,9 @@
 	</body>
 
 <script>
-const badgifts = ["the collected works of Neil Diamond", "one free massage from Pepper", "a pack of batteries (batteries not included)", "Christmas spirit", "a slinky", "a valuable lesson"]
-const goodgifts = ["the collected works of Neil Diamond", "a pet rock", "a platter of cheese", "an all expense paid trip to Paris, Kentucky", "socks", "a brand new chew toy", "a pony"]
+const date = new Date();
+const badgifts = ["the collected works of Neil Diamond", "one free massage from Pepper", "a pack of batteries (batteries not included)", "Christmas spirit", "a slinky", "a valuable lesson", "a motorcycle", "a pack of cigarettes", "a box full of severed doll heads", "a box full of headless dolls"]
+const goodgifts = ["the collected works of Neil Diamond", "a pet rock", "a platter of cheese", "an all expense paid trip to Paris, Kentucky", "socks", "a brand new chew toy", "a pony", "a beanie baby", "tickle me Elmo", "a $15 giftcard for TGIF", "a unicycle"]
 let first = document.getElementById("first");
 let second = document.getElementById("second");
 let third = document.getElementById("third");
@@ -26,6 +27,7 @@ let who = document.getElementById("who");
 let naughtyresult = document.getElementById("naughtyresult");
 let presentresult = document.getElementById("presentresult");
 let number = 0;
+let naughty = 0;
 document.body.removeChild(second);
 document.body.removeChild(third);
 const hash = (str, seed = 0) => {
@@ -49,8 +51,10 @@ const checklist = () => {
 	}
 
 	who.innerText = name.value;
-	number = hash(name.value);
-	if (number % 2) {
+	number = hash(name.value, date.getFullYear());
+	naughty = number & 1;
+	number >>>= 1;
+	if (naughty) {
 		naughtyresult.innerText = "Nice";
 	} else {
 		naughtyresult.innerText = "Naughty";
@@ -61,7 +65,7 @@ const checklist = () => {
 }
 
 const openpresent = () => {
-	if (number % 2) {
+	if (naughty) {
 		presentresult.innerText = "Santa left you " + goodgifts[number % goodgifts.length] + "!!!";
 	} else {
 		presentresult.innerText = "Santa left you " + badgifts[number % badgifts.length] + "... Better luck next year!";
